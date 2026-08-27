@@ -1,4 +1,4 @@
-public import Tree_Primitives
+public import Tree
 
 extension __Tree where S: __TreeNStorage & ~Copyable, S.Address == __TreeNChildSlot<2> {
 

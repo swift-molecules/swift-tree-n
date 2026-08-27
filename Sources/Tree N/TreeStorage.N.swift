@@ -1,7 +1,7 @@
-public import Index_Primitives
-public import Storage_Generational_Primitives
+public import Index
+public import Storage_Generational
 public import Store_Primitive
-public import Tree_Primitives
+public import Tree
 
 extension TreeStorage {
 

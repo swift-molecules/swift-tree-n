@@ -1,4 +1,4 @@
-public import Tree_Primitives
+public import Tree
 
 @resultBuilder
 public enum __TreeNBuilder<Element> {

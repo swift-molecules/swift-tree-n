@@ -1,8 +1,8 @@
-public import Property_Primitives
-public import Stack_Primitives
-public import Tree_Primitives
+public import Property
+public import Stack
+public import Tree
 
-extension Property_Primitives.Property.Borrow
+extension Property.Property.Borrow
 where Base: __TreeProtocol & ~Copyable, Tag == __TreeForEach, Base.Address == __TreeNChildSlot<2> {
 
     @inlinable

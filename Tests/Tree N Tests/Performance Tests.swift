@@ -1,8 +1,8 @@
 import Testing
-import Tree_N_Primitives_Test_Support
+import Tree_N_Test_Support
 
-@testable import Buffer_Primitives
-@testable import Tree_N_Primitives
+@testable import Buffer
+@testable import Tree_N
 
 @Suite(.serialized)
 struct `Tree Binary Performance Tests` {

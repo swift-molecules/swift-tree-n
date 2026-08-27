@@ -1,7 +1,7 @@
-# Tree N Primitives
+# Tree N
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
-[![CI](https://github.com/swift-primitives/swift-tree-n-primitives/actions/workflows/ci.yml/badge.svg)](https://github.com/swift-primitives/swift-tree-n-primitives/actions/workflows/ci.yml)
+[![CI](https://github.com/swift-molecules/swift-tree-n/actions/workflows/ci.yml/badge.svg)](https://github.com/swift-molecules/swift-tree-n/actions/workflows/ci.yml)
 
 A bounded-arity n-ary tree — `Tree<Element>.N<n>` fixes the maximum child count at the type level, so a binary tree, a ternary tree, and a quadtree are the same type at different `n`, each with typed child slots (`.left`/`.right` at `n == 2`, `.northwest`…`.southeast` at `n == 4`) instead of raw child indices.
 
@@ -24,7 +24,7 @@ Nodes live in a generational arena rather than as allocated objects, so position
 ## Quick Start
 
 ```swift
-import Tree_N_Primitives
+import Tree_N
 
 // A binary tree is Tree.N at n == 2 — child slots are typed, not indices.
 var tree = Tree<Int>.N<2>()
@@ -49,7 +49,7 @@ _ = try quad.insert("lower-right", at: .southeast(of: origin))
 Complete binary trees can be declared in level order with the flat builder; sparse trees take the nested DSL, where each node places its children explicitly:
 
 ```swift
-import Tree_N_Primitives
+import Tree_N
 
 // Level-order: 1 is the root, 2 and 3 its children.
 let complete = Tree<Int>.Binary {
@@ -79,7 +79,7 @@ Add the dependency to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-tree-n-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-tree-n.git", branch: "main")
 ]
 ```
 
@@ -89,7 +89,7 @@ Add a product to your target:
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Tree N Primitives", package: "swift-tree-n-primitives")
+        .product(name: "Tree N", package: "swift-tree-n")
     ]
 )
 ```
@@ -102,8 +102,8 @@ The package is pre-1.0 — depend on `branch: "main"` until `0.1.0` is tagged. R
 
 | Product | Contents | When to import |
 |---------|----------|----------------|
-| `Tree N Primitives` | The bounded-arity storage column, the `Tree<Element>.N<n>` / `Tree<Element>.Binary` front doors, typed slots, builders, traversal accessors, and the iteration conformances | Most consumers |
-| `Tree N Primitives Test Support` | Shared fixtures for testing tree-consuming code | Test targets only |
+| `Tree N` | The bounded-arity storage column, the `Tree<Element>.N<n>` / `Tree<Element>.Binary` front doors, typed slots, builders, traversal accessors, and the iteration conformances | Most consumers |
+| `Tree N Test Support` | Shared fixtures for testing tree-consuming code | Test targets only |
 
 ---
 
@@ -149,9 +149,9 @@ do {
 
 ## Related Packages
 
-- swift-tree-primitives (not yet public) — the shared tree protocol, arena storage, and traversal algorithms this package's bounded-arity conformer builds on.
-- [`swift-array-primitives`](https://github.com/swift-primitives/swift-array-primitives) — the growable column-generic array from the same family of arena-backed containers.
-- [`swift-stack-primitives`](https://github.com/swift-primitives/swift-stack-primitives) — the stack discipline the iterative traversals use internally.
+- [`swift-tree`](https://github.com/swift-molecules/swift-tree) — the shared tree protocol, arena storage, and traversal algorithms this package's bounded-arity conformer builds on.
+- [`swift-array`](https://github.com/swift-molecules/swift-array) — the growable column-generic array from the same family of arena-backed containers.
+- [`swift-stack`](https://github.com/swift-molecules/swift-stack) — the stack discipline the iterative traversals use internally.
 
 ---
 

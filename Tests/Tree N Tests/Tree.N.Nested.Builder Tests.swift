@@ -1,7 +1,7 @@
 import Testing
-import Tree_N_Primitives_Test_Support
+import Tree_N_Test_Support
 
-@testable import Tree_N_Primitives
+@testable import Tree_N
 
 @Suite
 struct `Tree.N<2>.Nested.Builder` {

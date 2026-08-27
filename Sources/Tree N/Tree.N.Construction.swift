@@ -1,5 +1,5 @@
-public import Index_Primitives
-public import Tree_Primitives
+public import Index
+public import Tree
 
 extension __Tree where S: ~Copyable {
 
@@ -10,7 +10,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, let n: Int>(
-        minimumCapacity: Index_Primitives.Index<Element>.Count
+        minimumCapacity: Index.Index<Element>.Count
     ) where S == TreeStorage.N<Element, n> {
         self.init(storage: TreeStorage.N<Element, n>(minimumCapacity: minimumCapacity))
     }
@@ -22,7 +22,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element, let n: Int>(
-        minimumCapacity: Index_Primitives.Index<Element>.Count
+        minimumCapacity: Index.Index<Element>.Count
     ) where S == TreeStorage.N<Element, n> {
         self.init(storage: TreeStorage.N<Element, n>(minimumCapacity: minimumCapacity))
     }

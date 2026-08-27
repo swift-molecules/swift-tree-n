@@ -1,4 +1,4 @@
-public import Tree_Primitives
+public import Tree
 
 extension __TreeInsertPosition where Address == __TreeNChildSlot<2> {
 

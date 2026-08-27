@@ -1,10 +1,10 @@
-import Array_Primitives
-import Sequence_Primitives
+import Array
+import Sequence
 import Synchronization
 import Testing
-import Tree_N_Primitives_Test_Support
+import Tree_N_Test_Support
 
-@testable import Tree_N_Primitives
+@testable import Tree_N
 
 private func expectEqual(_ array: borrowing [Int], _ expected: Int...) {
     var index = 0

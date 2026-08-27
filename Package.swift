@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-tree-n-primitives",
+    name: "swift-tree-n",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,127 +13,127 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Tree N Primitives",
-            targets: ["Tree N Primitives"]
+            name: "Tree N",
+            targets: ["Tree N"]
         ),
         .library(
-            name: "Tree N Primitives Test Support",
-            targets: ["Tree N Primitives Test Support"]
+            name: "Tree N Test Support",
+            targets: ["Tree N Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-tree-primitives.git",
+            url: "https://github.com/swift-molecules/swift-tree.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-column-primitives.git",
+            url: "https://github.com/swift-molecules/swift-column.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git",
+            url: "https://github.com/swift-molecules/swift-ownership-shared.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-generational-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage-generational.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-ring.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-stack-primitives.git",
+            url: "https://github.com/swift-molecules/swift-stack.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-queue-primitives.git",
+            url: "https://github.com/swift-molecules/swift-queue.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-iterator-primitives.git",
+            url: "https://github.com/swift-molecules/swift-iterator.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-sequence-primitives.git",
+            url: "https://github.com/swift-molecules/swift-sequence.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-array-primitives.git",
+            url: "https://github.com/swift-molecules/swift-array.git",
             branch: "main"
         ),
 
         .package(
-            url: "https://github.com/swift-primitives/swift-property-primitives.git",
+            url: "https://github.com/swift-molecules/swift-property.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Tree N Primitives",
+            name: "Tree N",
             dependencies: [
-                .product(name: "Tree Primitives", package: "swift-tree-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Column Primitives", package: "swift-column-primitives"),
+                .product(name: "Tree", package: "swift-tree"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Column", package: "swift-column"),
                 .product(
                     name: "Ownership Shared Primitive",
-                    package: "swift-ownership-shared-primitives"
+                    package: "swift-ownership-shared"
                 ),
                 .product(
-                    name: "Storage Generational Primitives",
-                    package: "swift-storage-generational-primitives"
+                    name: "Storage Generational",
+                    package: "swift-storage-generational"
                 ),
-                .product(name: "Store Primitive", package: "swift-storage-primitives"),
+                .product(name: "Store Primitive", package: "swift-storage"),
                 .product(
                     name: "Buffer Linear Primitive",
-                    package: "swift-buffer-linear-primitives"
+                    package: "swift-buffer-linear"
                 ),
-                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
-                .product(name: "Stack Primitive", package: "swift-stack-primitives"),
-                .product(name: "Stack Primitives", package: "swift-stack-primitives"),
-                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
-                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
-                .product(name: "Iterable", package: "swift-iterator-primitives"),
-                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
-                .product(name: "Property Primitives", package: "swift-property-primitives"),
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
+                .product(name: "Stack Primitive", package: "swift-stack"),
+                .product(name: "Stack", package: "swift-stack"),
+                .product(name: "Queue", package: "swift-queue"),
+                .product(name: "Iterator Protocol", package: "swift-iterator"),
+                .product(name: "Iterator Chunk", package: "swift-iterator"),
+                .product(name: "Iterable", package: "swift-iterator"),
+                .product(name: "Sequence", package: "swift-sequence"),
+                .product(name: "Property", package: "swift-property"),
             ]
         ),
 
         .target(
-            name: "Tree N Primitives Test Support",
+            name: "Tree N Test Support",
             dependencies: [
-                "Tree N Primitives",
-                .product(name: "Tree Primitives Test Support", package: "swift-tree-primitives"),
+                "Tree N",
+                .product(name: "Tree Test Support", package: "swift-tree"),
             ],
             path: "Tests/Support"
         ),
 
         .testTarget(
-            name: "Tree N Primitives Tests",
+            name: "Tree N Tests",
             dependencies: [
-                "Tree N Primitives",
-                "Tree N Primitives Test Support",
-                .product(name: "Array Primitives", package: "swift-array-primitives"),
-                .product(name: "Buffer Primitives", package: "swift-buffer-primitives"),
-                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
+                "Tree N",
+                "Tree N Test Support",
+                .product(name: "Array", package: "swift-array"),
+                .product(name: "Buffer", package: "swift-buffer"),
+                .product(name: "Sequence", package: "swift-sequence"),
             ]
         ),
     ],

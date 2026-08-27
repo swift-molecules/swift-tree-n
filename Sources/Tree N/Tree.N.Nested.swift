@@ -1,4 +1,4 @@
-public import Tree_Primitives
+public import Tree
 
 public enum __TreeNNested<Element> {}
 
