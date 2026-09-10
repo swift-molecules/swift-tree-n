@@ -1,4 +1,3 @@
-# .github/metadata.yaml
 description: "Tree.N<n> — a bounded-arity n-ary tree with sparse child slots over a generational arena; Tree.Binary (n=2) rides the same surface with builders and pre/in/post/level-order traversal."
 topics:
   - molecules
