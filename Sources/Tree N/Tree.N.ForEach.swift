@@ -2,7 +2,7 @@ public import Property
 public import Stack
 public import Tree
 
-extension Property.Property.Borrow
+extension Property::Property.Borrow
 where Base: __TreeProtocol & ~Copyable, Tag == __TreeForEach, Base.Address == __TreeNChildSlot<2> {
 
     @inlinable

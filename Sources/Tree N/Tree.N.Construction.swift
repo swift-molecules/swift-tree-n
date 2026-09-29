@@ -10,7 +10,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, let n: Int>(
-        minimumCapacity: Index.Index<Element>.Count
+        minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.N<Element, n> {
         self.init(storage: TreeStorage.N<Element, n>(minimumCapacity: minimumCapacity))
     }
@@ -22,7 +22,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element, let n: Int>(
-        minimumCapacity: Index.Index<Element>.Count
+        minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.N<Element, n> {
         self.init(storage: TreeStorage.N<Element, n>(minimumCapacity: minimumCapacity))
     }
