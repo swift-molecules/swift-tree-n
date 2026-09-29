@@ -1,5 +1,4 @@
 public import Iterator
-public import Iterator_Primitive
 public import Sequence
 public import Tree
 
@@ -19,14 +18,14 @@ extension __TreeNOrder.In.Sequence: Iterable where S.Element: Copyable {
 
     @_implements(Iterable,Iterator)
     public typealias IterableIterator =
-        Iterator_Primitive.Iterator.Materializing<__TreeNOrder.In.Iterator<S>>
+        Iterator::Iterator.Materializing<__TreeNOrder.In.Iterator<S>>
 
     @_lifetime(borrow self)
     @_implements(Iterable,makeIterator())
     public borrowing func iterableMakeIterator()
-        -> Iterator_Primitive.Iterator.Materializing<__TreeNOrder.In.Iterator<S>>
+        -> Iterator::Iterator.Materializing<__TreeNOrder.In.Iterator<S>>
     {
-        Iterator_Primitive.Iterator.Materializing(__TreeNOrder.In.Iterator<S>(tree: tree))
+        Iterator::Iterator.Materializing(__TreeNOrder.In.Iterator<S>(tree: tree))
     }
 }
 

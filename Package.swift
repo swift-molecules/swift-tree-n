@@ -22,16 +22,9 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-molecules/swift-tree.git", branch: "main", traits: ["Property"]),
         .package(
-            url: "https://github.com/swift-molecules/swift-tree.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-column.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
         .package(
@@ -39,13 +32,8 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-storage-generational.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-storage.git",
-            branch: "main"
-        ),
+            url: "https://github.com/swift-atoms/swift-storage.git",
+            branch: "main", traits: ["Generational", "Memory"]),
         .package(
             url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
@@ -55,7 +43,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-buffer.git",
+            url: "https://github.com/swift-atoms/swift-buffer.git",
             branch: "main"
         ),
         .package(
@@ -63,15 +51,15 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-queue.git",
+            url: "https://github.com/swift-atoms/swift-queue.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-iterator.git",
+            url: "https://github.com/swift-atoms/swift-iterator.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-sequence.git",
+            url: "https://github.com/swift-atoms/swift-sequence.git",
             branch: "main"
         ),
         .package(
@@ -80,9 +68,12 @@ let package = Package(
         ),
 
         .package(
-            url: "https://github.com/swift-molecules/swift-property.git",
+            url: "https://github.com/swift-atoms/swift-property.git",
             branch: "main"
         ),
+        .package(url: "https://github.com/swift-atoms/swift-memory.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-memory-allocation.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-store.git", branch: "main"),
     ],
     targets: [
 
@@ -91,27 +82,28 @@ let package = Package(
             dependencies: [
                 .product(name: "Tree", package: "swift-tree"),
                 .product(name: "Index", package: "swift-index"),
-                .product(name: "Column", package: "swift-column"),
                 .product(
                     name: "Ownership Shared Primitive",
                     package: "swift-ownership-shared"
                 ),
                 .product(
-                    name: "Storage Generational",
-                    package: "swift-storage-generational"
-                ),
-                .product(name: "Store Primitive", package: "swift-storage"),
-                .product(
                     name: "Buffer Linear Primitive",
                     package: "swift-buffer-linear"
                 ),
                 .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
-                .product(name: "Stack Primitive", package: "swift-stack"),
                 .product(name: "Stack", package: "swift-stack"),
                 .product(name: "Queue", package: "swift-queue"),
                 .product(name: "Iterator", package: "swift-iterator"),
                 .product(name: "Sequence", package: "swift-sequence"),
                 .product(name: "Property", package: "swift-property"),
+                .product(name: "Storage", package: "swift-storage"),
+                .product(name: "Buffer", package: "swift-buffer"),
+                .product(name: "Buffer Linear Bounded Primitive", package: "swift-buffer-linear"),
+                .product(name: "Memory Allocator Pool", package: "swift-memory-allocation"),
+                .product(name: "Memory Pool", package: "swift-memory-allocation"),
+                .product(name: "Memory Allocator", package: "swift-memory-allocation"),
+                .product(name: "Memory", package: "swift-memory"),
+                .product(name: "Store", package: "swift-store"),
             ]
         ),
 
@@ -119,7 +111,7 @@ let package = Package(
             name: "Tree N Test Support",
             dependencies: [
                 "Tree N",
-                .product(name: "Tree Test Support", package: "swift-tree"),
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
