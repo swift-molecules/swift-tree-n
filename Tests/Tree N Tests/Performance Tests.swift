@@ -9,8 +9,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Insert 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -30,8 +30,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Insert 50,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(50_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -51,8 +51,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Navigate 100,000 positions`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(1_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -81,8 +81,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Pre-order traversal 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -103,8 +103,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `In-order traversal 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -125,8 +125,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Post-order traversal 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -147,8 +147,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Level-order traversal 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -169,8 +169,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Remove subtree 5,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -192,8 +192,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Clear 10,000 nodes`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree.insert(0, at: .root))
@@ -213,8 +213,8 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Copy-on-write with 10,000 nodes`() throws {
-        var tree1 = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree1 = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(10_000)
 
         positions.append(try tree1.insert(0, at: .root))
@@ -241,8 +241,8 @@ struct `Tree Binary Performance Tests` {
     @Test
     func `Memory layout sizes`() {
 
-        let positionSize = MemoryLayout<Tree<Int>.Position>.size
-        let treeSize = MemoryLayout<Tree<Int>.N<2>>.size
+        let positionSize = MemoryLayout<__TreePosition>.size
+        let treeSize = MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.size
 
         #expect(positionSize <= 16)
 
@@ -250,14 +250,14 @@ struct `Tree Binary Performance Tests` {
 
         print("Position size: \(positionSize) bytes")
         print("Tree handle size: \(treeSize) bytes")
-        print("Position stride: \(MemoryLayout<Tree<Int>.Position>.stride) bytes")
-        print("Tree handle stride: \(MemoryLayout<Tree<Int>.N<2>>.stride) bytes")
+        print("Position stride: \(MemoryLayout<__TreePosition>.stride) bytes")
+        print("Tree handle stride: \(MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.stride) bytes")
     }
 
     @Test
     func `Token validation 100,000 operations`() throws {
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(100)
 
         positions.append(try tree.insert(0, at: .root))
@@ -285,7 +285,7 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Deep tree (1,000 levels left-only)`() throws {
-        var tree = Tree<Int>.Binary()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
 
         var current = try tree.insert(0, at: .root)
         for i in 1..<1_000 {
@@ -302,7 +302,7 @@ struct `Tree Binary Performance Tests` {
 
     @Test
     func `Deep tree (5,000 levels) - height and clear`() throws {
-        var tree = Tree<Int>.Binary()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
 
         var current = try tree.insert(0, at: .root)
         for i in 1..<5_000 {
@@ -326,10 +326,10 @@ struct `Tree Binary Stats Tests` {
         print("=== Memory Layout ===")
 
         print(
-            "Tree<Int>.Position: size=\(MemoryLayout<Tree<Int>.Position>.size) stride=\(MemoryLayout<Tree<Int>.Position>.stride) align=\(MemoryLayout<Tree<Int>.Position>.alignment)"
+            "__TreePosition: size=\(MemoryLayout<__TreePosition>.size) stride=\(MemoryLayout<__TreePosition>.stride) align=\(MemoryLayout<__TreePosition>.alignment)"
         )
         print(
-            "Tree<Int>.N<2> (handle): size=\(MemoryLayout<Tree<Int>.N<2>>.size) stride=\(MemoryLayout<Tree<Int>.N<2>>.stride)"
+            "__Tree<TreeStorage.N<Int, 2>> (handle): size=\(MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.size) stride=\(MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.stride)"
         )
         print(
             "Store.Generational.Handle: size=\(MemoryLayout<Store.Generational.Handle>.size) stride=\(MemoryLayout<Store.Generational.Handle>.stride)"
@@ -345,8 +345,8 @@ struct `Tree Binary Stats Tests` {
         let clock = ContinuousClock()
 
         let growableTime = try clock.measure {
-            var tree = Tree<Int>.Binary()
-            var positions: [Tree<Int>.Position] = []
+            var tree = __Tree<TreeStorage.N<Int, 2>>()
+            var positions: [__TreePosition] = []
             positions.reserveCapacity(nodeCount)
             positions.append(try tree.insert(0, at: .root))
             for i in 1..<nodeCount {
@@ -361,8 +361,8 @@ struct `Tree Binary Stats Tests` {
         }
 
         let preReservedTime = try clock.measure {
-            var tree = Tree<Int>.Binary(minimumCapacity: 10_000)
-            var positions: [Tree<Int>.Position] = []
+            var tree = __Tree<TreeStorage.N<Int, 2>>(minimumCapacity: 10_000)
+            var positions: [__TreePosition] = []
             positions.reserveCapacity(nodeCount)
             positions.append(try tree.insert(0, at: .root))
             for i in 1..<nodeCount {
@@ -386,8 +386,8 @@ struct `Tree Binary Stats Tests` {
         let nodeCount = 10_000
         let clock = ContinuousClock()
 
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(nodeCount)
         positions.append(try tree.insert(0, at: .root))
         for i in 1..<nodeCount {
@@ -435,7 +435,7 @@ struct `Tree Binary Stats Tests` {
         let nodeCount = 5_000
         let clock = ContinuousClock()
 
-        var tree = Tree<Int>.Binary()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         var current = try tree.insert(0, at: .root)
         for i in 1..<nodeCount {
             current = try tree.insert(i, at: .left(of: current))
@@ -477,8 +477,8 @@ struct `Tree Binary Stats Tests` {
         let clock = ContinuousClock()
 
         let growableTime = try clock.measure {
-            var tree = Tree<Int>.Binary()
-            var positions: [Tree<Int>.Position] = []
+            var tree = __Tree<TreeStorage.N<Int, 2>>()
+            var positions: [__TreePosition] = []
             positions.reserveCapacity(nodeCount)
             positions.append(try tree.insert(0, at: .root))
             for i in 1..<nodeCount {
@@ -500,8 +500,8 @@ struct `Tree Binary Stats Tests` {
         let nodeCount = 10_000
         let clock = ContinuousClock()
 
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(nodeCount)
         positions.append(try tree.insert(0, at: .root))
         for i in 1..<nodeCount {
@@ -513,7 +513,7 @@ struct `Tree Binary Stats Tests` {
             }
         }
 
-        var tree2: Tree<Int>.Binary!
+        var tree2: __Tree<TreeStorage.N<Int, 2>>!
         let copyTime = clock.measure {
             tree2 = tree
         }
@@ -543,8 +543,8 @@ struct `Tree Binary Stats Tests` {
         let iterations = 100
         let clock = ContinuousClock()
 
-        var tree = Tree<Int>.Binary()
-        var positions: [Tree<Int>.Position] = []
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
+        var positions: [__TreePosition] = []
         positions.reserveCapacity(nodeCount)
         positions.append(try tree.insert(0, at: .root))
         for i in 1..<nodeCount {

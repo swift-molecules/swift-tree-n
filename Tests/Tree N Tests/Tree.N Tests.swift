@@ -24,7 +24,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Empty tree`() {
-        let tree = Tree<Int>.N<2>()
+        let tree = __Tree<TreeStorage.N<Int, 2>>()
         #expect(tree.isEmpty)
         #expect(tree.count == 0)
         #expect(tree.root == nil)
@@ -33,7 +33,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Insert root`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(42, at: .root)
 
         #expect(!tree.isEmpty)
@@ -46,7 +46,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Insert children`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         let right = try tree.insert(3, at: .right(of: root))
@@ -64,7 +64,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Insert throws on occupied root`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         _ = try tree.insert(1, at: .root)
 
         #expect(throws: __TreeError.rootOccupied) {
@@ -74,7 +74,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Insert throws on occupied child`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         _ = try tree.insert(2, at: .left(of: root))
 
@@ -85,7 +85,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Remove leaf`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
 
@@ -97,7 +97,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Remove throws on non-leaf`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         _ = try tree.insert(2, at: .left(of: root))
 
@@ -108,7 +108,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Remove subtree`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(4, at: .left(of: left))
@@ -124,7 +124,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Clear tree`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         _ = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -137,7 +137,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Pre-order traversal`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -151,7 +151,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `In-order traversal`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -165,7 +165,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Post-order traversal`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -179,7 +179,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Level-order traversal`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -193,7 +193,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Traversal sequences`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -208,7 +208,7 @@ struct `Tree.N<2>` {
 
     @Test
     func `Height calculation`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         #expect(tree.height == nil)
 
         let root = try tree.insert(1, at: .root)
@@ -223,9 +223,9 @@ struct `Tree.N<2>` {
 
     @Test
     func `Capacity growth`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
 
-        var positions: [Tree<Int>.Position] = []
+        var positions: [__TreePosition] = []
         positions.append(try tree.insert(1, at: .root))
 
         for i in 0..<7 {
@@ -265,7 +265,7 @@ struct `Tree.N<2>.NonCopyable` {
     @Test
     func `NonCopyable insert and peek`() throws {
         let tracker = DeinitTracker()
-        var tree = Tree<Token>.N<2>()
+        var tree = __Tree<TreeStorage.N<Token, 2>>()
 
         let root = try tree.insert(Token(1, tracker: tracker), at: .root)
         _ = try tree.insert(Token(2, tracker: tracker), at: .left(of: root))
@@ -282,7 +282,7 @@ struct `Tree.N<2>.NonCopyable` {
         let tracker = DeinitTracker()
 
         do {
-            var tree = Tree<Token>.N<2>()
+            var tree = __Tree<TreeStorage.N<Token, 2>>()
             let root = try tree.insert(Token(1, tracker: tracker), at: .root)
             let left = try tree.insert(Token(2, tracker: tracker), at: .left(of: root))
             _ = try tree.insert(Token(3, tracker: tracker), at: .right(of: root))
@@ -296,7 +296,7 @@ struct `Tree.N<2>.NonCopyable` {
     @Test
     func `NonCopyable forEach`() throws {
         let tracker = DeinitTracker()
-        var tree = Tree<Token>.N<2>()
+        var tree = __Tree<TreeStorage.N<Token, 2>>()
 
         let root = try tree.insert(Token(1, tracker: tracker), at: .root)
         _ = try tree.insert(Token(2, tracker: tracker), at: .left(of: root))
@@ -325,7 +325,7 @@ struct `Tree.N<2>.ConditionalCopyable` {
 
     @Test
     func `Copyable when element is Copyable`() throws {
-        var tree1 = Tree<Int>.N<2>()
+        var tree1 = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree1.insert(1, at: .root)
         _ = try tree1.insert(2, at: .left(of: root))
 
@@ -336,7 +336,7 @@ struct `Tree.N<2>.ConditionalCopyable` {
 
     @Test
     func `Copy-on-write behavior`() throws {
-        var tree1 = Tree<Int>.N<2>()
+        var tree1 = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree1.insert(1, at: .root)
         _ = try tree1.insert(2, at: .left(of: root))
 
@@ -356,7 +356,7 @@ struct `Tree.N<2>.Sendable` {
 
     @Test
     func `Sendable when element is Sendable`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(42, at: .root)
         _ = try tree.insert(1, at: .left(of: root))
 
@@ -370,7 +370,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Stale position after remove returns nil for navigation`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -386,7 +386,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Stale position after remove throws on insert`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         _ = try tree.insert(3, at: .right(of: root))
@@ -403,7 +403,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Position remains valid after unrelated inserts`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
 
@@ -421,7 +421,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Position remains valid after unrelated removes`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
         let right = try tree.insert(3, at: .right(of: root))
@@ -437,7 +437,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Position survives CoW copy`() throws {
-        var tree1 = Tree<Int>.N<2>()
+        var tree1 = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree1.insert(1, at: .root)
         let left = try tree1.insert(2, at: .left(of: root))
 
@@ -453,10 +453,10 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Position survives growth reallocation`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
 
         let root = try tree.insert(1, at: .root)
-        var positions: [Tree<Int>.Position] = [root]
+        var positions: [__TreePosition] = [root]
 
         for i in 0..<20 {
             let parent = positions[i / 2]
@@ -473,7 +473,7 @@ struct `Tree.N<2>.StalePosition` {
 
     @Test
     func `Removed and reallocated slot invalidates old position`() throws {
-        var tree = Tree<Int>.N<2>()
+        var tree = __Tree<TreeStorage.N<Int, 2>>()
         let root = try tree.insert(1, at: .root)
         let left = try tree.insert(2, at: .left(of: root))
 

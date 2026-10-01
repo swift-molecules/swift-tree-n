@@ -15,7 +15,7 @@ struct `Tree.Binary.Builder` {
 extension `Tree.Binary.Builder` {
 
     fileprivate static func inOrder(
-        _ tree: borrowing Tree<Int>.Binary
+        _ tree: borrowing __Tree<TreeStorage.N<Int, 2>>
     ) -> [Int] {
         var result: [Int] = []
         tree.forEach.inOrder { result.append($0) }
@@ -23,7 +23,7 @@ extension `Tree.Binary.Builder` {
     }
 
     fileprivate static func preOrder(
-        _ tree: borrowing Tree<Int>.Binary
+        _ tree: borrowing __Tree<TreeStorage.N<Int, 2>>
     ) -> [Int] {
         var result: [Int] = []
         tree.forEach.preOrder { result.append($0) }
@@ -35,13 +35,13 @@ extension `Tree.Binary.Builder`.`Level Order` {
 
     @Test
     func `Single element makes root`() {
-        let tree = Tree<Int>.Binary { 1 }
+        let tree = __Tree<TreeStorage.N<Int, 2>> { 1 }
         #expect(tree.count == 1)
     }
 
     @Test
     func `Three elements form root with two children`() {
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             2
             3
@@ -55,7 +55,7 @@ extension `Tree.Binary.Builder`.`Level Order` {
     @Test
     func `Seven elements form complete tree`() {
 
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             2
             3
@@ -75,27 +75,27 @@ extension `Tree.Binary.Builder`.Unit {
 
     @Test
     func `Empty block produces empty tree`() {
-        let tree = Tree<Int>.Binary {}
+        let tree = __Tree<TreeStorage.N<Int, 2>> {}
         #expect(tree.isEmpty)
     }
 
     @Test
     func `Optional element - some`() {
         let value: Int? = 42
-        let tree = Tree<Int>.Binary { value }
+        let tree = __Tree<TreeStorage.N<Int, 2>> { value }
         #expect(tree.count == 1)
     }
 
     @Test
     func `Optional element - none produces empty tree`() {
         let value: Int? = nil
-        let tree = Tree<Int>.Binary { value }
+        let tree = __Tree<TreeStorage.N<Int, 2>> { value }
         #expect(tree.isEmpty)
     }
 
     @Test
     func `Two elements - root with left child only`() {
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             10
             20
         }
@@ -110,7 +110,7 @@ extension `Tree.Binary.Builder`.Unit {
     @Test
     func `Conditional include adds to layout`() {
         let include = true
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             2
             if include {
@@ -123,7 +123,7 @@ extension `Tree.Binary.Builder`.Unit {
     @Test
     func `Conditional exclude reduces layout`() {
         let include = false
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             2
             if include {
@@ -135,7 +135,7 @@ extension `Tree.Binary.Builder`.Unit {
 
     @Test
     func `For loop builds wide tree`() {
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             for i in 1...7 {
                 i
             }
@@ -148,7 +148,7 @@ extension `Tree.Binary.Builder`.`Edge Case` {
 
     @Test
     func `Many elements`() {
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             for i in 0..<31 {
                 i
             }
@@ -160,7 +160,7 @@ extension `Tree.Binary.Builder`.`Edge Case` {
     func `Mixed with Optional none entries`() {
         let none: Int? = nil
         let some: Int? = 99
-        let tree = Tree<Int>.Binary {
+        let tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             none
             some
@@ -174,7 +174,7 @@ extension `Tree.Binary.Builder`.Integration {
 
     @Test
     func `Builder result accepts further inserts via imperative API`() throws {
-        var tree = Tree<Int>.Binary {
+        var tree = __Tree<TreeStorage.N<Int, 2>> {
             1
             2
             3
@@ -191,19 +191,19 @@ extension `Tree.Binary.Builder`.`Static Methods` {
 
     @Test
     func `buildExpression single element`() {
-        let result = Tree<Int>.N<2>.Builder.buildExpression(42)
+        let result = __Tree<TreeStorage.N<Int, 2>>.Builder.buildExpression(42)
         #expect(result == [42])
     }
 
     @Test
     func `buildExpression array`() {
-        let result = Tree<Int>.N<2>.Builder.buildExpression([1, 2, 3])
+        let result = __Tree<TreeStorage.N<Int, 2>>.Builder.buildExpression([1, 2, 3])
         #expect(result == [1, 2, 3])
     }
 
     @Test
     func `buildPartialBlock accumulated`() {
-        let result = Tree<Int>.N<2>.Builder.buildPartialBlock(
+        let result = __Tree<TreeStorage.N<Int, 2>>.Builder.buildPartialBlock(
             accumulated: [1, 2],
             next: [3, 4]
         )
@@ -212,7 +212,7 @@ extension `Tree.Binary.Builder`.`Static Methods` {
 
     @Test
     func `buildArray flattens components`() {
-        let result = Tree<Int>.N<2>.Builder.buildArray([[1, 2], [3]])
+        let result = __Tree<TreeStorage.N<Int, 2>>.Builder.buildArray([[1, 2], [3]])
         #expect(result == [1, 2, 3])
     }
 }
