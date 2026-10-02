@@ -321,270 +321,92 @@ struct `Tree Binary Performance Tests` {
 @Suite(.serialized)
 struct `Tree Binary Stats Tests` {
 
-    @Test
-    func `Memory layout report`() {
-        print("=== Memory Layout ===")
-
-        print(
-            "__TreePosition: size=\(MemoryLayout<__TreePosition>.size) stride=\(MemoryLayout<__TreePosition>.stride) align=\(MemoryLayout<__TreePosition>.alignment)"
-        )
-        print(
-            "__Tree<TreeStorage.N<Int, 2>> (handle): size=\(MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.size) stride=\(MemoryLayout<__Tree<TreeStorage.N<Int, 2>>>.stride)"
-        )
-        print(
-            "Store.Generational.Handle: size=\(MemoryLayout<Store.Generational.Handle>.size) stride=\(MemoryLayout<Store.Generational.Handle>.stride)"
-        )
-
-        let retiredSideTable = MemoryLayout<Store.Generational.Handle?>.stride
-        print("Retired position side table would have been: \(retiredSideTable) bytes/slot")
-    }
-
-    @Test
-    func `Timed insert - growable vs bounded vs pre-reserved`() throws {
-        let nodeCount = 10_000
-        let clock = ContinuousClock()
-
-        let growableTime = try clock.measure {
-            var tree = __Tree<TreeStorage.N<Int, 2>>()
-            var positions: [__TreePosition] = []
-            positions.reserveCapacity(nodeCount)
-            positions.append(try tree.insert(0, at: .root))
-            for i in 1..<nodeCount {
-                let parentIndex = (i - 1) / 2
-                let parent = positions[parentIndex]
-                if i % 2 == 1 {
-                    positions.append(try tree.insert(i, at: .left(of: parent)))
-                } else {
-                    positions.append(try tree.insert(i, at: .right(of: parent)))
-                }
-            }
-        }
-
-        let preReservedTime = try clock.measure {
-            var tree = __Tree<TreeStorage.N<Int, 2>>(minimumCapacity: 10_000)
-            var positions: [__TreePosition] = []
-            positions.reserveCapacity(nodeCount)
-            positions.append(try tree.insert(0, at: .root))
-            for i in 1..<nodeCount {
-                let parentIndex = (i - 1) / 2
-                let parent = positions[parentIndex]
-                if i % 2 == 1 {
-                    positions.append(try tree.insert(i, at: .left(of: parent)))
-                } else {
-                    positions.append(try tree.insert(i, at: .right(of: parent)))
-                }
-            }
-        }
-
-        print("=== Timed Insert (\(nodeCount) nodes) ===")
-        print("Growable (no reserve): \(growableTime)")
-        print("Pre-reserved:          \(preReservedTime)")
-    }
-
-    @Test
-    func `Timed traversal comparison`() throws {
-        let nodeCount = 10_000
-        let clock = ContinuousClock()
-
-        var tree = __Tree<TreeStorage.N<Int, 2>>()
+    static func completeBinaryTree(
+        _ nodeCount: Int,
+        minimumCapacity: Int? = nil
+    ) throws -> (__Tree<TreeStorage.N<Int, 2>>, [__TreePosition]) {
+        var tree = minimumCapacity.map { __Tree<TreeStorage.N<Int, 2>>(minimumCapacity: .init(UInt($0))) } ?? __Tree<TreeStorage.N<Int, 2>>()
         var positions: [__TreePosition] = []
         positions.reserveCapacity(nodeCount)
         positions.append(try tree.insert(0, at: .root))
         for i in 1..<nodeCount {
-            let parentIndex = (i - 1) / 2
-            let parent = positions[parentIndex]
-            if i % 2 == 1 {
-                positions.append(try tree.insert(i, at: .left(of: parent)))
-            } else {
-                positions.append(try tree.insert(i, at: .right(of: parent)))
-            }
+            let parent = positions[(i - 1) / 2]
+            positions.append(try tree.insert(i, at: i % 2 == 1 ? .left(of: parent) : .right(of: parent)))
         }
+        return (tree, positions)
+    }
 
-        var count = 0
-
-        let preOrderTime = clock.measure {
-            count = 0
-            tree.forEach.preOrder { _ in count += 1 }
-        }
-
-        let inOrderTime = clock.measure {
-            count = 0
-            tree.forEach.inOrder { _ in count += 1 }
-        }
-
-        let postOrderTime = clock.measure {
-            count = 0
-            tree.forEach.postOrder { _ in count += 1 }
-        }
-
-        let levelOrderTime = clock.measure {
-            count = 0
-            tree.forEach.levelOrder { _ in count += 1 }
-        }
-
-        print("=== Timed Traversal (\(nodeCount) nodes, complete binary tree) ===")
-        print("Pre-order:   \(preOrderTime)")
-        print("In-order:    \(inOrderTime)")
-        print("Post-order:  \(postOrderTime)")
-        print("Level-order: \(levelOrderTime)")
-        _ = count
+    @Test(arguments: [(128, nil), (10_000, nil), (10_000, 10_000)] as [(Int, Int?)])
+    func `Complete binary tree insert, with and without reserved capacity`(_ nodeCount: Int, _ capacity: Int?) throws {
+        let (tree, positions) = try Self.completeBinaryTree(nodeCount, minimumCapacity: capacity)
+        #expect(Int(bitPattern: tree.count) == nodeCount)
+        #expect(positions.map { tree.peek(at: $0) } == Array(0..<nodeCount))
     }
 
     @Test
-    func `Timed traversal - degenerate left-chain`() throws {
-        let nodeCount = 5_000
-        let clock = ContinuousClock()
+    func `Every traversal order visits each node of a 10,000-node complete binary tree once`() throws {
+        let (tree, _) = try Self.completeBinaryTree(10_000)
+        var pre: [Int] = []
+        var inOrder: [Int] = []
+        var post: [Int] = []
+        var level: [Int] = []
+        tree.forEach.preOrder { pre.append($0) }
+        tree.forEach.inOrder { inOrder.append($0) }
+        tree.forEach.postOrder { post.append($0) }
+        tree.forEach.levelOrder { level.append($0) }
+        #expect(level == Array(0..<10_000))
+        #expect(pre.first == 0)
+        #expect(post.last == 0)
+        #expect(pre.sorted() == level)
+        #expect(inOrder.sorted() == level)
+        #expect(post.sorted() == level)
+    }
 
+    @Test
+    func `Every traversal order visits a 5,000-deep left chain in chain order`() throws {
         var tree = __Tree<TreeStorage.N<Int, 2>>()
         var current = try tree.insert(0, at: .root)
-        for i in 1..<nodeCount {
+        for i in 1..<5_000 {
             current = try tree.insert(i, at: .left(of: current))
         }
-
-        var count = 0
-
-        let preOrderTime = clock.measure {
-            count = 0
-            tree.forEach.preOrder { _ in count += 1 }
-        }
-
-        let inOrderTime = clock.measure {
-            count = 0
-            tree.forEach.inOrder { _ in count += 1 }
-        }
-
-        let postOrderTime = clock.measure {
-            count = 0
-            tree.forEach.postOrder { _ in count += 1 }
-        }
-
-        let levelOrderTime = clock.measure {
-            count = 0
-            tree.forEach.levelOrder { _ in count += 1 }
-        }
-
-        print("=== Timed Traversal (\(nodeCount) nodes, left-chain / depth=\(nodeCount - 1)) ===")
-        print("Pre-order:   \(preOrderTime)")
-        print("In-order:    \(inOrderTime)")
-        print("Post-order:  \(postOrderTime)")
-        print("Level-order: \(levelOrderTime)")
-        _ = count
+        var pre: [Int] = []
+        var inOrder: [Int] = []
+        var post: [Int] = []
+        var level: [Int] = []
+        tree.forEach.preOrder { pre.append($0) }
+        tree.forEach.inOrder { inOrder.append($0) }
+        tree.forEach.postOrder { post.append($0) }
+        tree.forEach.levelOrder { level.append($0) }
+        #expect(pre == Array(0..<5_000))
+        #expect(level == Array(0..<5_000))
+        #expect(inOrder == Array((0..<5_000).reversed()))
+        #expect(post == Array((0..<5_000).reversed()))
     }
 
     @Test
-    func `Variant comparison - insert 128 nodes`() throws {
-        let nodeCount = 128
-        let clock = ContinuousClock()
-
-        let growableTime = try clock.measure {
-            var tree = __Tree<TreeStorage.N<Int, 2>>()
-            var positions: [__TreePosition] = []
-            positions.reserveCapacity(nodeCount)
-            positions.append(try tree.insert(0, at: .root))
-            for i in 1..<nodeCount {
-                let p = (i - 1) / 2
-                if i % 2 == 1 {
-                    positions.append(try tree.insert(i, at: .left(of: positions[p])))
-                } else {
-                    positions.append(try tree.insert(i, at: .right(of: positions[p])))
-                }
-            }
-        }
-
-        print("=== Variant Comparison (\(nodeCount) node complete binary tree) ===")
-        print("Tree.N (growable):   \(growableTime)")
-    }
-
-    @Test
-    func `CoW copy and mutation cost`() throws {
-        let nodeCount = 10_000
-        let clock = ContinuousClock()
-
-        var tree = __Tree<TreeStorage.N<Int, 2>>()
-        var positions: [__TreePosition] = []
-        positions.reserveCapacity(nodeCount)
-        positions.append(try tree.insert(0, at: .root))
-        for i in 1..<nodeCount {
-            let p = (i - 1) / 2
-            if i % 2 == 1 {
-                positions.append(try tree.insert(i, at: .left(of: positions[p])))
-            } else {
-                positions.append(try tree.insert(i, at: .right(of: positions[p])))
-            }
-        }
-
-        var tree2: __Tree<TreeStorage.N<Int, 2>>!
-        let copyTime = clock.measure {
-            tree2 = tree
-        }
-
-        let leafPos = positions.last!
-        let firstMutationTime = try clock.measure {
-            _ = try tree2.insert(99999, at: .left(of: leafPos))
-        }
-
-        let leaf2 = tree2.left(of: leafPos)!
-        let subsequentMutationTime = try clock.measure {
-            _ = try tree2.insert(99998, at: .left(of: leaf2))
-        }
-
-        print("=== CoW Cost (\(nodeCount) nodes) ===")
-        print("Shallow copy (ref-count bump): \(copyTime)")
-        print("First mutation (deep copy):    \(firstMutationTime)")
-        print("Subsequent mutation (no copy): \(subsequentMutationTime)")
-
+    func `A copy shares until its first mutation, which leaves the original unchanged`() throws {
+        let (tree, positions) = try Self.completeBinaryTree(10_000)
+        var copy = tree
+        let leaf = positions.last!
+        _ = try copy.insert(99_999, at: .left(of: leaf))
+        let added = copy.left(of: leaf)!
+        _ = try copy.insert(99_998, at: .left(of: added))
         #expect(tree.count == 10_000)
-        #expect(tree2.count == 10_002)
+        #expect(copy.count == 10_002)
+        #expect(tree.left(of: leaf) == nil)
     }
 
     @Test
-    func `Navigation cost - pointer chase analysis`() throws {
-        let nodeCount = 10_000
-        let iterations = 100
-        let clock = ContinuousClock()
-
-        var tree = __Tree<TreeStorage.N<Int, 2>>()
-        var positions: [__TreePosition] = []
-        positions.reserveCapacity(nodeCount)
-        positions.append(try tree.insert(0, at: .root))
-        for i in 1..<nodeCount {
-            let p = (i - 1) / 2
-            if i % 2 == 1 {
-                positions.append(try tree.insert(i, at: .left(of: positions[p])))
-            } else {
-                positions.append(try tree.insert(i, at: .right(of: positions[p])))
-            }
+    func `Peeking every position and walking the leftmost path give exact results`() throws {
+        let (tree, positions) = try Self.completeBinaryTree(10_000)
+        #expect(positions.reduce(0) { $0 + (tree.peek(at: $1) ?? 0) } == (0..<10_000).reduce(0, +))
+        var walked: [Int] = []
+        var position = tree.root!
+        for _ in 0..<10_000 {
+            walked.append(tree.peek(at: position)!)
+            guard let next = tree.left(of: position) ?? tree.right(of: position) else { break }
+            position = next
         }
-
-        var sum = 0
-        _ = clock.measure {
-            for _ in 0..<iterations {
-                for pos in positions {
-                    sum += tree.peek(at: pos) ?? 0
-                }
-            }
-        }
-
-        var walkCount = 0
-        _ = clock.measure {
-            for _ in 0..<iterations {
-                var pos = tree.root!
-                while true {
-                    walkCount += 1
-                    if let l = tree.left(of: pos) {
-                        pos = l
-                    } else if let r = tree.right(of: pos) {
-                        pos = r
-                    } else {
-                        break
-                    }
-                }
-            }
-        }
-
-        print("=== Navigation Cost (\(nodeCount) nodes) ===")
-
-        _ = sum
+        #expect(walked == (0..<14).map { (1 << $0) - 1 })
     }
-
 }
