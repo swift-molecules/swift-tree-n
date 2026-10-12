@@ -1,4 +1,4 @@
-public import Storage
+internal import Storage
 public import Store
 
 @usableFromInline

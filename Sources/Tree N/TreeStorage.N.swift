@@ -1,5 +1,5 @@
 public import Index
-public import Storage
+internal import Storage
 public import Store
 public import Tree
 

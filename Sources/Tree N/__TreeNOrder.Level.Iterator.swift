@@ -34,18 +34,20 @@ extension __TreeNOrder.Level {
                 pending.enqueue(rootHandle)
             }
         }
+    }
+}
 
-        @inlinable
-        public mutating func next() -> S.Element? {
-            guard let handle = pending.dequeue() else { return nil }
+extension __TreeNOrder.Level.Iterator {
+    @inlinable
+    public mutating func next() -> S.Element? {
+        guard let handle = pending.dequeue() else { return nil }
 
-            let value = tree._value(of: handle)
+        let value = tree._value(of: handle)
 
-            for child in tree._childHandles(of: handle) {
-                pending.enqueue(child)
-            }
-
-            return value
+        for child in tree._childHandles(of: handle) {
+            pending.enqueue(child)
         }
+
+        return value
     }
 }

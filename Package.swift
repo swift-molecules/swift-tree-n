@@ -110,7 +110,7 @@ let package = Package(
         .target(
             name: "Tree N Test Support",
             dependencies: [
-                "Tree N",
+                .target(name: "Tree N"),
                 .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
@@ -119,8 +119,8 @@ let package = Package(
         .testTarget(
             name: "Tree N Tests",
             dependencies: [
-                "Tree N",
-                "Tree N Test Support",
+                .target(name: "Tree N"),
+                .target(name: "Tree N Test Support"),
                 .product(name: "Array", package: "swift-array"),
                 .product(name: "Buffer", package: "swift-buffer"),
                 .product(name: "Sequence", package: "swift-sequence"),
@@ -131,19 +131,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-
-    let package: [SwiftSetting] = [
-        .enableExperimentalFeature("RawLayout")
-    ]
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

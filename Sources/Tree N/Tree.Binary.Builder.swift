@@ -14,7 +14,7 @@ public enum __TreeNBuilder<Element> {
     }
 
     @inlinable
-    public static func buildExpression<S: Swift.Sequence>(_ expression: S) -> [Element]
+    public static func buildExpression<S: Swift::Sequence>(_ expression: S) -> [Element]
     where S.Element == Element {
         Array(expression)
     }

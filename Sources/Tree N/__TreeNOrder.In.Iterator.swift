@@ -23,25 +23,27 @@ extension __TreeNOrder.In {
             self.pending = Stack<Store.Generational.Handle>()
             self.current = tree._rootHandle
         }
+    }
+}
 
-        @inlinable
-        public mutating func next() -> S.Element? {
-            while current != nil || !pending.isEmpty {
+extension __TreeNOrder.In.Iterator {
+    @inlinable
+    public mutating func next() -> S.Element? {
+        while current != nil || !pending.isEmpty {
 
-                while let c = current {
-                    pending.push(c)
-                    current = tree._childHandle(of: c, at: .left)
-                }
-
-                guard let c = pending.pop() else { return nil }
-                let value = tree._value(of: c)
-
-                current = tree._childHandle(of: c, at: .right)
-
-                return value
+            while let c = current {
+                pending.push(c)
+                current = tree._childHandle(of: c, at: .left)
             }
 
-            return nil
+            guard let c = pending.pop() else { return nil }
+            let value = tree._value(of: c)
+
+            current = tree._childHandle(of: c, at: .right)
+
+            return value
         }
+
+        return nil
     }
 }
